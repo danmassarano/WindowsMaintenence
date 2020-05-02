@@ -1,3 +1,4 @@
+# Test hard drives and review errors
 chkdsk C:
 chkdsk F:
 chkdsk G:
