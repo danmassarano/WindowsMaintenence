@@ -14,7 +14,7 @@ Out of order from that guide, I'm going with what I can automate first, then fig
 
 * Test hard drive and review errors
 * Junk programs uninstall
-* Windows files clean with cleanmgr.exe
+* ~~Windows files clean with cleanmgr.exe~~
 * Windows Update cache reset
 * Temp file clean with Bleachbit
 * ~~Fast virus scan~~
@@ -70,7 +70,16 @@ Pretty sure this one has to be done manually
 
 ##### Windows files clean with cleanmgr.exe
 
-* TODO: This uses built in Windows commands so can likely be included in script
+* ~~Run ```cleanmgr``` on all drives~~
+* TODO: Find way of setting this up automatically, or having settings in a config file
+
+Disk Cleanup runs against a preset profile that has saved settings of what it runs against. To conficure this, run the following command:
+
+```powershell
+cleanmgr /sageset:1
+```
+
+This brings up a dialog box showing what tasks will be run by Disk Cleanup. Select everything except 'Downloads' and click 'OK'. This will save the settings for you in a registry key.
 
 ##### Windows Update cache reset
 
