@@ -23,7 +23,10 @@ cleanmgr /sagerun:1
 Write-Completed
 
 # Windows Update cache reset
-
-
+Write-Header -header "Resetting Windows Update cache..."
+Get-Service -DisplayName "Background Intelligent Transfer Service" | Stop-Service
+Get-Service -DisplayName "Windows Update" | Stop-Service
+Remove-Item -path C:\Windows\SoftwareDistribution -Recurse
+Write-Completed
 
 # Temp file clean with Bleachbit

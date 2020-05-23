@@ -17,7 +17,7 @@ Out of order from that guide, I'm going with what I can automate first, then fig
 * ~~Test hard drive and review errors~~
 * ~~Junk programs uninstall~~
 * ~~Windows files clean with cleanmgr.exe~~
-* Windows Update cache reset
+* ~~Windows Update cache reset~~
 * Temp file clean with Bleachbit
 * **Force reboot, run subsequent steps after**
 * ~~Fast virus scan~~
@@ -118,10 +118,6 @@ cleanmgr /sageset:1
 ```
 
 This brings up a dialog box showing what tasks will be run by Disk Cleanup. Select everything except 'Downloads' and click 'OK'. This will save the settings for you in a registry key.
-
-##### Windows Update cache reset
-
-* TODO: This uses built in Windows commands so can likely be included in script
 
 ##### Temp file clean with Bleachbit
 
