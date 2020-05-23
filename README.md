@@ -18,19 +18,18 @@ Out of order from that guide, I'm going with what I can automate first, then fig
 * ~~Junk programs uninstall~~
 * ~~Windows files clean with cleanmgr.exe~~
 * ~~Windows Update cache reset~~
-* Temp file clean with Bleachbit
+* ~~Temp file clean with Bleachbit~~
 * **Force reboot, run subsequent steps after**
 * ~~Fast virus scan~~
-* Malware/Junkware checkup
 * ~~Check Windows Update and Firewall~~
-* DISM RestoreHealth (Windows 8+)
+* ~~DISM RestoreHealth (Windows 8+)~~
 * ~~Install Windows updates and configure automatic update~~
-* WinSxS cleanup ResetBase (Windows 8+)
+* ~~WinSxS cleanup ResetBase (Windows 8+)~~
 * ~~Set UAC to full~~
-* Windows Search purge and re-initialization
+* ~~Windows Search purge and re-initialization~~
 * ~~Enroll into cloud protection for Windows Defender~~
-* Update drivers
-* Defragmentation
+* **Update drivers**
+* **Defragmentation**
 
 ## Setup
 
@@ -48,7 +47,9 @@ The rest I'm looking to automate in a powershell script that I've set up in Wind
 
 ### Running Powershell script in Task Scheduler
 
-* TODO: Can I script the setup of this?
+TODO: Can I script the setup of this?
+
+TODO: Just blog this bit and link it
 
 If you want to just execute it manually,you can just run the script - navigate to the directory where the script is to run. You'll have to temporarily set permissions to allow it to run, as Windows doesn't allow unsigned PowerShell scripts to run by default:
 
@@ -85,7 +86,7 @@ In the "settings" tab, you can add any extra settings like allowing the task to 
 
 This will schedule to run the first part of the process on a weekly basis.
 
-TODO: Once completed this will force a reboot, with the second part to run afterwards.
+Once completed this will force a reboot, with the second part to run afterwards.
 
 To schedule the second process, set up a schedule in the same way you did for the first, but when you get to triggers change the tigger to 'On Startup'. This will allow the script to run after the previous one has completed and rebooted your PC.
 
@@ -97,19 +98,7 @@ TODO: That should be it but confirm when I fully set up.
 
 The rest need to be automated in this script or done manually. Thoughts below, but I'm still working out how to do it all.
 
-##### Test hard drive and review errors before starting
-
-Windows has a built in tool to check disk health - ```chkdsk``` - run this for all disks.
-
-* ~~Run ```chkdsk``` on all drives~~
-* TODO: Refactor into a loop that checks for all drives
-* TODO: Add logging - so that all issues are tracked in a log file
-* TODO: If any issues are found, reboot later and run full disk check with ```chkdsk /f /r```
-
 ##### Windows files clean with cleanmgr.exe
-
-* ~~Run ```cleanmgr``` on all drives~~
-* TODO: Find way of setting this up automatically, or having settings in a config file
 
 Disk Cleanup runs against a preset profile that has saved settings of what it runs against. To configure this, run the following command:
 
@@ -119,38 +108,18 @@ cleanmgr /sageset:1
 
 This brings up a dialog box showing what tasks will be run by Disk Cleanup. Select everything except 'Downloads' and click 'OK'. This will save the settings for you in a registry key.
 
-##### Temp file clean with Bleachbit
-
-* TODO: Uses third part software so I'll have to figure out how to download/update and run in script
-
-##### Malware/Junkware checkup
-
-* TODO: Uses third part software so I'll have to figure out how to download/update and run in script
-
-##### DISM RestoreHealth (Windows 8+)
-
-* TODO: This uses built in Windows commands so can likely be included in script
-
-##### WinSxS cleanup ResetBase (Windows 8+)
-
-* TODO: This uses built in Windows commands so can likely be included in script
-
-##### Windows Search purge and re-initialization
-
-* TODO: This uses built in Windows commands so can likely be included in script
-
 ##### Update drivers
 
-* TODO: Uses third part software so I'll have to figure out how to download/update and run in script
-* TODO: Likely route is to have a list of places to check, log and alert when an update is available and download/install updates where needed
+* Uses third party software so I'll have to figure out how to download/update and run in script
+* Likely route is to have a list of places to check, log and alert when an update is available and download/install updates where needed
 
 ##### Defragmentation
 
-* TODO: Uses third part software so I'll have to figure out how to download/update and run in script
+* Uses third party software so I'll have to figure out how to download/update and run in script
 
 ##### Additional
 
-* TODO: Add logging - so that all issues are tracked in a log file
+* Add logging - so that all issues are tracked in a log file
 * Have a config file where all variables can be set up (eg drives to check, driver types) so they don't need to be hard-coded
 
 ### Manual Steps
