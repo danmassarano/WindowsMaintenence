@@ -8,6 +8,8 @@ I do some basic maintenance checks on my PC every few months, mostly a manual pr
 
 I've been working off [this guide on Decent Security](https://decentsecurity.com/#/holiday-tasks/), and working to automate as many of them as possible. Some will still have to remain manual, but we'll see how it goes.
 
+This has been designed to run in the background, so once it's set up it shouldn't require and manual intervention. However, as some Windows maintenence processes require a reboot, this will reboot the PC at times so is best scheduled for times when the PC isn't in use, such as overnight.
+
 ## Maintenance Steps
 
 Out of order from that guide, I'm going with what I can automate first, then figuring out the rest as I go. The ones crossed out are already implemented.
@@ -17,6 +19,7 @@ Out of order from that guide, I'm going with what I can automate first, then fig
 * ~~Windows files clean with cleanmgr.exe~~
 * Windows Update cache reset
 * Temp file clean with Bleachbit
+* **Force reboot, run subsequent steps after**
 * ~~Fast virus scan~~
 * Malware/Junkware checkup
 * ~~Check Windows Update and Firewall~~
@@ -35,11 +38,11 @@ Out of order from that guide, I'm going with what I can automate first, then fig
 
 These can all be configured in Windows. They only need to be set up once and are pretty simple to set up. Refer to the Decent Security guide above if you're stuck.
 
-* ##### Check Windows Update and Firewall
-* ##### Install Windows updates and configure automatic update
-* ##### Set UAC to full
-* ##### Enroll into cloud protection for Windows Defender
-* ##### Fast virus scan
+* **Check Windows Update and Firewall**
+* **Install Windows updates and configure automatic update**
+* **Set UAC to full**
+* **Enroll into cloud protection for Windows Defender**
+* **Fast virus scan**
 
 The rest I'm looking to automate in a powershell script that I've set up in Windows Task Scheduler.
 
@@ -51,10 +54,10 @@ If you want to just execute it manually,you can just run the script - navigate t
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
-.\WindowsMaintenence.ps1
+.\WindowsMaintenenceStep1.ps1
 ```
 
-This should run the whole script.
+This should run the first script. You can run the second in a similar way, although I would strongly recommend rebooting after running the first. 
 
 Ideally you want it to run in an automated way so it can run as often as possible on a regular schedule. To do this, it needs to be set up in Windows Task Scheduler.
 
@@ -74,11 +77,19 @@ To start a script, set the following:
 
 * Action: Start a program
 * Program\script: powershell
-* Add arguments (optional): -File [WindowsMaintenence Directory]\WindowsMaintenence.ps1
+* Add arguments (optional): -File [WindowsMaintenence Directory]\WindowsMaintenenceStep1.ps1
 
-Go to the "Conditions" tab - this will set some additinoal conditions for the environment to check whether to run the task. For example, you can set it to not run if you're on battery power. You can leave the defaults, but I'd check the "Start the task only if the computer is idle for:" option and set if for an hour.
+Go to the "Conditions" tab - this will set some additional conditions for the environment to check whether to run the task. For example, you can set it to not run if you're on battery power. You can leave the defaults, but I'd check the "Start the task only if the computer is idle for:" option and set if for an hour.
 
 In the "settings" tab, you can add any extra settings like allowing the task to be run on demand or stopped on demand. You can leave the defaults.
+
+This will schedule to run the first part of the process on a weekly basis.
+
+TODO: Once completed this will force a reboot, with the second part to run afterwards.
+
+To schedule the second process, set up a schedule in the same way you did for the first, but when you get to triggers change the tigger to 'On Startup'. This will allow the script to run after the previous one has completed and rebooted your PC.
+
+TODO: This won't neccesarily make it run everything ever time you reboot, the script is set up to only run if the reboot was caused by this maintenence script.
 
 TODO: That should be it but confirm when I fully set up.
 
