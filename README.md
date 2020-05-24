@@ -4,32 +4,11 @@
 
 Automate some basic maintenance processes for Windows 10
 
-I do some basic maintenance checks on my PC every few months, mostly a manual process that's time consuming so I'm looking to automate it as much as possible.
+I do some basic maintenance checks on my PC every few months, mostly a manual process that's time consuming so I've written this to automate it as much as possible.
 
-I've been working off [this guide on Decent Security](https://decentsecurity.com/#/holiday-tasks/), and working to automate as many of them as possible. Some will still have to remain manual, but we'll see how it goes.
+I've worked off off [this guide on Decent Security](https://decentsecurity.com/#/holiday-tasks/). Some of these steps have to be done manually, but almost all can be automated.
 
 This has been designed to run in the background, so once it's set up it shouldn't require and manual intervention. However, as some Windows maintenence processes require a reboot, this will reboot the PC at times so is best scheduled for times when the PC isn't in use, such as overnight.
-
-## Maintenance Steps
-
-Out of order from that guide, I'm going with what I can automate first, then figuring out the rest as I go. The ones crossed out are already implemented.
-
-* ~~Test hard drive and review errors~~
-* ~~Junk programs uninstall~~
-* ~~Windows files clean with cleanmgr.exe~~
-* ~~Windows Update cache reset~~
-* ~~Temp file clean with Bleachbit~~
-* **Force reboot, run subsequent steps after**
-* ~~Fast virus scan~~
-* ~~Check Windows Update and Firewall~~
-* ~~DISM RestoreHealth (Windows 8+)~~
-* ~~Install Windows updates and configure automatic update~~
-* ~~WinSxS cleanup ResetBase (Windows 8+)~~
-* ~~Set UAC to full~~
-* ~~Windows Search purge and re-initialization~~
-* ~~Enroll into cloud protection for Windows Defender~~
-* **Update drivers**
-* **Defragmentation**
 
 ## Setup
 
@@ -43,7 +22,35 @@ These can all be configured in Windows. They only need to be set up once and are
 * **Enroll into cloud protection for Windows Defender**
 * **Fast virus scan**
 
-The rest I'm looking to automate in a powershell script that I've set up in Windows Task Scheduler.
+### Software to install/setup beforehand
+
+##### Windows files clean with cleanmgr.exe
+
+Disk Cleanup runs against a preset profile that has saved settings of what it runs against. To configure this, run the following command:
+
+```powershell
+cleanmgr /sageset:1
+```
+
+This brings up a dialog box showing what tasks will be run by Disk Cleanup. Select everything except 'Downloads' and click 'OK'. This will save the settings for you in a registry key.
+
+##### Defragmentation
+
+I'm using [MyDefrag](https://filehippo.com/download_mydefrag/) rather than the inbuilt Windows tool, but this is only needed if you're using HDD's. It shouldn't be needed at all if you're only using a single drive for your system disk - seriously, just get an SSD.
+
+If you're like me and also have a bunch of data disks, you'll want this step. It does require you to install MyDefrag, and add it to your environment path.
+
+This script is running the data disk weekly profile on all data disks like so
+
+```powershell
+MyDefrag.exe -r DataDiskWeekly.MyD -v [diskname]
+```
+
+where ```-v``` specifies the names of the data disks. You'll need to change this to whatever disks you're using, but can just put it all in one line. For example, if you've got 2 data disks, D and E, use the following:
+
+```powershell
+MyDefrag.exe -r DataDiskWeekly.MyD -v D: -v E:
+```
 
 ### Running Powershell script in Task Scheduler
 
@@ -98,24 +105,12 @@ TODO: That should be it but confirm when I fully set up.
 
 The rest need to be automated in this script or done manually. Thoughts below, but I'm still working out how to do it all.
 
-##### Windows files clean with cleanmgr.exe
 
-Disk Cleanup runs against a preset profile that has saved settings of what it runs against. To configure this, run the following command:
-
-```powershell
-cleanmgr /sageset:1
-```
-
-This brings up a dialog box showing what tasks will be run by Disk Cleanup. Select everything except 'Downloads' and click 'OK'. This will save the settings for you in a registry key.
 
 ##### Update drivers
 
 * Uses third party software so I'll have to figure out how to download/update and run in script
 * Likely route is to have a list of places to check, log and alert when an update is available and download/install updates where needed
-
-##### Defragmentation
-
-* Uses third party software so I'll have to figure out how to download/update and run in script
 
 ##### Additional
 
@@ -125,3 +120,8 @@ This brings up a dialog box showing what tasks will be run by Disk Cleanup. Sele
 ### Manual Steps
 
 * Junk programs uninstall
+
+
+## Maintenance Steps
+
+Out of order from that guide, I'm going with what I can automate first, then figuring out the rest as I go. The ones crossed out are already implemented.

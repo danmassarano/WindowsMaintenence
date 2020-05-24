@@ -29,3 +29,4 @@ Write-Completed
 # Update Drivers
 
 # Defragmentation
+MyDefrag.exe -r DataDiskWeekly.MyD -v G: -v F: -v J: -v H:
