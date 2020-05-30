@@ -1,0 +1,9 @@
+[
+    {
+        "SystemDrives" : "C:"
+    },
+    {
+        "DataDrives": "F: G: H: J:"
+    },
+    {"key2": "value2"}
+]

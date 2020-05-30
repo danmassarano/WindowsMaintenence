@@ -24,6 +24,12 @@ These can all be configured in Windows. They only need to be set up once and are
 
 ### Software to install/setup beforehand
 
+#### Configuring the script
+
+All settings are stored in a config.json file so can be configured up front rather than altering the script.
+
+TODO: Complete k/v descriptions in readme and how to input
+
 ##### Windows files clean with cleanmgr.exe
 
 Disk Cleanup runs against a preset profile that has saved settings of what it runs against. To configure this, run the following command:
@@ -97,15 +103,13 @@ Once completed this will force a reboot, with the second part to run afterwards.
 
 To schedule the second process, set up a schedule in the same way you did for the first, but when you get to triggers change the tigger to 'On Startup'. This will allow the script to run after the previous one has completed and rebooted your PC.
 
-TODO: This won't neccesarily make it run everything ever time you reboot, the script is set up to only run if the reboot was caused by this maintenence script.
+FIXME: This won't neccesarily make it run everything ever time you reboot, the script is set up to only run if the reboot was caused by this maintenence script.
 
 TODO: That should be it but confirm when I fully set up.
 
 ### Maintenance Script
 
 The rest need to be automated in this script or done manually. Thoughts below, but I'm still working out how to do it all.
-
-
 
 ##### Update drivers
 
@@ -120,7 +124,6 @@ The rest need to be automated in this script or done manually. Thoughts below, b
 ### Manual Steps
 
 * Junk programs uninstall
-
 
 ## Maintenance Steps
 

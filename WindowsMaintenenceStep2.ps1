@@ -29,4 +29,5 @@ Write-Completed
 # Update Drivers
 
 # Defragmentation
+# TODO: Refactor Defragmentation so can be read from config
 MyDefrag.exe -r DataDiskWeekly.MyD -v G: -v F: -v J: -v H:

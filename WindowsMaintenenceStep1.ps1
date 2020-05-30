@@ -8,20 +8,36 @@ function Write-Completed {
     Write-Host "Completed"
 }
 
+# Import config file for input variables for script
+Write-Header -header "Importing configuration..."
+$config = Get-Content -Raw -Path config.json | ConvertFrom-Json
+Write-Completed
+
 # Test hard drives and review errors
-# TODO: Refactor into a loop that checks for all drives
 # TODO: Add logging - so that all issues are tracked in a log file
-# TODO: If any issues are found, reboot later and run full disk check with ```chkdsk /f /r```
+# TODO: If any issues are found when testing hard drives, reboot later and run full disk check with ```chkdsk /f /r```
 Write-Header -header "Scanning hard drives for faults..."
-chkdsk C:
-chkdsk F:
-chkdsk G:
-chkdsk H:
-chkdsk J:
+
+$SystemDrives = $config.SystemDrives
+$DataDrives = $config.DataDrives
+
+$SystemDrives = $SystemDrives -split " "
+$DataDrives = $DataDrives -split " "
+
+for ($i = 0; $i -lt $SystemDrives.length - 2; $i++)
+{
+	chkdsk $SystemDrives[$i]
+}
+
+for ($i = 1; $i -lt $DataDrives.length - 1; $i++)
+{
+	chkdsk $DataDrives[$i]
+}
+
 Write-Completed
 
 # Windows file clean
-# TODO: Find way of setting up preset profile automatically, or having settings in a config file
+# TODO: Find way of setting up preset cleanmgr profile automatically, or having settings in a config file
 Write-Header -header "Running Disk Cleanup..."
 cleanmgr /sagerun:1
 Write-Completed
