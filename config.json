@@ -1,9 +1,5 @@
-[
-    {
-        "SystemDrives" : "C:"
-    },
-    {
-        "DataDrives": "F: G: H: J:"
-    },
-    {"key2": "value2"}
-]
+{
+    "SystemDrives":  "C:",
+    "DataDrives":  "F: G: H: J:",
+    "NeedsReboot":  0
+}

@@ -44,19 +44,7 @@ This brings up a dialog box showing what tasks will be run by Disk Cleanup. Sele
 
 I'm using [MyDefrag](https://filehippo.com/download_mydefrag/) rather than the inbuilt Windows tool, but this is only needed if you're using HDD's. It shouldn't be needed at all if you're only using a single drive for your system disk - seriously, just get an SSD.
 
-If you're like me and also have a bunch of data disks, you'll want this step. It does require you to install MyDefrag, and add it to your environment path.
-
-This script is running the data disk weekly profile on all data disks like so
-
-```powershell
-MyDefrag.exe -r DataDiskWeekly.MyD -v [diskname]
-```
-
-where ```-v``` specifies the names of the data disks. You'll need to change this to whatever disks you're using, but can just put it all in one line. For example, if you've got 2 data disks, D and E, use the following:
-
-```powershell
-MyDefrag.exe -r DataDiskWeekly.MyD -v D: -v E:
-```
+If you're like me and also have a bunch of data disks, you'll want this step. It does require you to install MyDefrag, and add it to your environment path. Otherwise, just clear the data disk entries in your config file and it'll skip this.
 
 ### Running Powershell script in Task Scheduler
 
@@ -103,7 +91,7 @@ Once completed this will force a reboot, with the second part to run afterwards.
 
 To schedule the second process, set up a schedule in the same way you did for the first, but when you get to triggers change the tigger to 'On Startup'. This will allow the script to run after the previous one has completed and rebooted your PC.
 
-FIXME: This won't neccesarily make it run everything ever time you reboot, the script is set up to only run if the reboot was caused by this maintenence script.
+This will make the second script run if the first one has completed and triggered a reboot.
 
 TODO: That should be it but confirm when I fully set up.
 

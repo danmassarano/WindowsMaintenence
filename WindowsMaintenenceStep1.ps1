@@ -20,24 +20,18 @@ Write-Header -header "Scanning hard drives for faults..."
 
 $SystemDrives = $config.SystemDrives
 $DataDrives = $config.DataDrives
-
 $SystemDrives = $SystemDrives -split " "
 $DataDrives = $DataDrives -split " "
+$Drives = $SystemDrives + $DataDrives
 
-for ($i = 0; $i -lt $SystemDrives.length - 2; $i++)
+for ($i = 0; $i -lt $Drives.length; $i++)
 {
-	chkdsk $SystemDrives[$i]
-}
-
-for ($i = 1; $i -lt $DataDrives.length - 1; $i++)
-{
-	chkdsk $DataDrives[$i]
+	Write-Host chkdsk $Drives[$i]
 }
 
 Write-Completed
 
 # Windows file clean
-# TODO: Find way of setting up preset cleanmgr profile automatically, or having settings in a config file
 Write-Header -header "Running Disk Cleanup..."
 cleanmgr /sagerun:1
 Write-Completed
@@ -54,5 +48,7 @@ Write-Header -header "Bleachit is cleaning up temp files..."
 bleachbit_console.exe --clean flash.* internet_explorer.* firefox.* system.logs system.memory_dump system.recycle_bin system.tmp
 Write-Completed
 
-# Reboot on completion
+# Reboot on completion and flag that next step needs to run
+$config | ForEach-Object {$_.NeedsReboot=1}
+$config | ConvertTo-Json -depth 32| set-content -Path config.json
 #Restart-Computer
