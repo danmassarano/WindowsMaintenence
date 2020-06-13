@@ -4,33 +4,54 @@
 
 Automate some basic maintenance processes for Windows 10
 
-I do some basic maintenance checks on my PC every few months, mostly a manual process that's time consuming so I've written this to automate it as much as possible.
+I do some basic maintenance checks on my PC every few months, mostly a manual process that's time consuming so I wrote this to automate it as much as possible.
 
-I've worked off off [this guide on Decent Security](https://decentsecurity.com/#/holiday-tasks/). Some of these steps have to be done manually, but almost all can be automated.
+I worked off off [this guide on Decent Security](https://decentsecurity.com/#/holiday-tasks/). Some of these steps have to be done manually, but almost all can be automated.
 
 This has been designed to run in the background, so once it's set up it shouldn't require and manual intervention. However, as some Windows maintenence processes require a reboot, this will reboot the PC at times so is best scheduled for times when the PC isn't in use, such as overnight.
 
+## Operations
+
+This script performs the following:
+
+* Test hard drives and review errors
+* Windows file clean
+* Windows Update cache reset
+* Temp file clean with Bleachbit
+* DISM RestoreHealth
+* WinSxS cleanup ResetBase
+* Windows Search purge and re-initialization
+* Defragmentation
+
 ## Setup
 
-### Configure in Windows
+#### Configure in Windows
 
 These can all be configured in Windows. They only need to be set up once and are pretty simple to set up. Refer to the Decent Security guide above if you're stuck.
 
-* **Check Windows Update and Firewall**
-* **Install Windows updates and configure automatic update**
-* **Set UAC to full**
-* **Enroll into cloud protection for Windows Defender**
-* **Fast virus scan**
-
-### Software to install/setup beforehand
+* Check Windows Update and Firewall
+* Install Windows updates and configure automatic update
+* Set UAC to full
+* Enroll into cloud protection for Windows Defender
+* Fast virus scan
 
 #### Configuring the script
 
-All settings are stored in a config.json file so can be configured up front rather than altering the script.
+All settings are stored in a ```config.json``` file so can be configured up front rather than altering the script.
 
-TODO: Complete k/v descriptions in readme and how to input
+The only values that you should change here are ```SystemDrives``` and ```DataDrives```. These are used to tell the program what drives are in use. 
 
-##### Windows files clean with cleanmgr.exe
+```SystemDrives``` is usually your C drive, but for the purposes of this program put any of your SSD's in there - those will be cleaned up but not defragmented. 
+
+```DataDrives``` refers to any magnetic hard drives, these would need defragmenting so put any hard drives you're using there.
+
+For example, if you only have a single SSD with everything on there (the most usual case), set ```"SystemDrives": "C:"``` and leave ```"DataDrives":``` empty.
+
+Essentially, drives that need defragmenting in ```DataDrives``` and everything else in ```SystemDrives```. Also, make sure to format it like so:
+
+```drivename: drivename:``` eg ```C: D:``` - make sure to put the colon and space in there!
+
+#### Windows files clean with cleanmgr.exe
 
 Disk Cleanup runs against a preset profile that has saved settings of what it runs against. To configure this, run the following command:
 
@@ -40,17 +61,15 @@ cleanmgr /sageset:1
 
 This brings up a dialog box showing what tasks will be run by Disk Cleanup. Select everything except 'Downloads' and click 'OK'. This will save the settings for you in a registry key.
 
-##### Defragmentation
+#### Defragmentation
 
 I'm using [MyDefrag](https://filehippo.com/download_mydefrag/) rather than the inbuilt Windows tool, but this is only needed if you're using HDD's. It shouldn't be needed at all if you're only using a single drive for your system disk - seriously, just get an SSD.
 
-If you're like me and also have a bunch of data disks, you'll want this step. It does require you to install MyDefrag, and add it to your environment path. Otherwise, just clear the data disk entries in your config file and it'll skip this.
+If also have a bunch of data disks, you'll want this step. It does require you to install MyDefrag, and add it to your environment path. Otherwise, just clear the data disk values in the config file and it'll skip this.
 
-### Running Powershell script in Task Scheduler
+#### Running Powershell script in Task Scheduler
 
 TODO: Can I script the setup of this?
-
-TODO: Just blog this bit and link it
 
 If you want to just execute it manually,you can just run the script - navigate to the directory where the script is to run. You'll have to temporarily set permissions to allow it to run, as Windows doesn't allow unsigned PowerShell scripts to run by default:
 
@@ -93,26 +112,9 @@ To schedule the second process, set up a schedule in the same way you did for th
 
 This will make the second script run if the first one has completed and triggered a reboot.
 
-TODO: That should be it but confirm when I fully set up.
+## Additional work to complete
 
-### Maintenance Script
-
-The rest need to be automated in this script or done manually. Thoughts below, but I'm still working out how to do it all.
-
-##### Update drivers
-
-* Uses third party software so I'll have to figure out how to download/update and run in script
-* Likely route is to have a list of places to check, log and alert when an update is available and download/install updates where needed
-
-##### Additional
-
+* Update drivers
+    * Uses third party software so I'll have to figure out how to download/update and run in script
+    * Likely route is to have a list of places to check, log and alert when an update is available and download/install updates where needed
 * Add logging - so that all issues are tracked in a log file
-* Have a config file where all variables can be set up (eg drives to check, driver types) so they don't need to be hard-coded
-
-### Manual Steps
-
-* Junk programs uninstall
-
-## Maintenance Steps
-
-Out of order from that guide, I'm going with what I can automate first, then figuring out the rest as I go. The ones crossed out are already implemented.
