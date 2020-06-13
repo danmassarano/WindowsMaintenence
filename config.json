@@ -2,5 +2,6 @@
     "SystemDrives":  "C:",
     "DataDrives":  "F: G: H: J:",
     "NeedsReboot":  0,
-    "HasDiskErrors": 0
+    "HasDiskErrors": 0,
+    "DisksWithErrors": ""
 }

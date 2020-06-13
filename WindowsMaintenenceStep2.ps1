@@ -13,8 +13,29 @@ Write-Header -header "Importing configuration..."
 $config = Get-Content -Raw -Path config.json | ConvertFrom-Json
 Write-Completed
 
+# Check if any disks need to be fixed
+if ($config.NeedsReboot == 1 -And $config.HasDiskErrors == 1)
+{
+    Write-Header -header "Fixing disc faults..."
+
+    $DisksWithErrors = $config.DisksWithErrors
+    $DisksWithErrors = $DisksWithErrors -split " "
+
+    for ($i = 0; $i -lt $DisksWithErrors.length; $i++)
+    {
+        chkdsk $DisksWithErrors[$i] /f /r
+    }
+    Write-Completed
+
+    $config | ForEach-Object {$_.HasDiskErrors=""}
+    $config | ForEach-Object {$_.HasDiskErrors=0}
+    $config | ConvertTo-Json -depth 32| set-content -Path config.json
+    Write-Completed
+    #Restart-Computer
+}
+
 # Only run if previous script has run
-if ($config == 1)
+elseif ($config.NeedsReboot == 1)
 {
     # DISM RestoreHealth
     Write-Header -header "Checking Windows image..."

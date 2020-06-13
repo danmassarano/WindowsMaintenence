@@ -15,7 +15,6 @@ Write-Completed
 
 # Test hard drives and review errors
 # TODO: Add logging - so that all issues are tracked in a log file
-# TODO: If any issues are found when testing hard drives, reboot later and run full disk check with ```chkdsk /f /r```
 Write-Header -header "Scanning hard drives for faults..."
 
 $SystemDrives = $config.SystemDrives
@@ -24,9 +23,19 @@ $SystemDrives = $SystemDrives -split " "
 $DataDrives = $DataDrives -split " "
 $Drives = $SystemDrives + $DataDrives
 
+$DisksWithErrors = ""
+
 for ($i = 0; $i -lt $Drives.length; $i++)
 {
-	Write-Host chkdsk $Drives[$i]
+    chkdsk $Drives[$i]
+    
+    if($LASTEXITCODE -gt 1)
+    {
+        Write-Host "Completed with errors"
+        $config | ForEach-Object {$_.HasDiskErrors=1}
+        $DisksWithErrors += $i
+    }
+    $config | ForEach-Object {$_.DisksWithErrors=$DisksWithErrors}
 }
 
 Write-Completed
