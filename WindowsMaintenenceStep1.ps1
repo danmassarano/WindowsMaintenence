@@ -1,11 +1,23 @@
+function Get-TimeStamp {
+    
+    return "[{0:dd-MMM-yy} {0:HH:mm:ss}]" -f (Get-Date)
+    
+}
+
+function Write-Log {
+    param([string]$content)
+    Write-Host "$content"
+    Write-Output "$(Get-TimeStamp) $content" | Out-file log.txt -append
+}
+
 function Write-Header {
     param([string]$header)
-    Write-Host "############################################################`n"
-    Write-Host "$header"
+    Write-Log -content "############################################################`n"
+    Write-Log -content "$header"
 }
 
 function Write-Completed {
-    Write-Host "Completed"
+    Write-Log -content "Completed"
 }
 
 # Import config file for input variables for script
@@ -14,7 +26,6 @@ $config = Get-Content -Raw -Path config.json | ConvertFrom-Json
 Write-Completed
 
 # Test hard drives and review errors
-# TODO: Add logging - so that all issues are tracked in a log file
 Write-Header -header "Scanning hard drives for faults..."
 
 $SystemDrives = $config.SystemDrives
@@ -31,7 +42,7 @@ for ($i = 0; $i -lt $Drives.length; $i++)
     
     if($LASTEXITCODE -gt 1)
     {
-        Write-Host "Completed with errors"
+        Write-Log -content "Completed with errors"
         $config | ForEach-Object {$_.HasDiskErrors=1}
         $DisksWithErrors += $i
     }

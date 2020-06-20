@@ -112,9 +112,11 @@ To schedule the second process, set up a schedule in the same way you did for th
 
 This will make the second script run if the first one has completed and triggered a reboot.
 
+#### Troubleshooting
+The script is set up to output everything to a log file, ```log.txt```, so if you encounter any issues they will be tracked in there. 
+
 ## Additional work to complete
 
 * Update drivers
     * Uses third party software so I'll have to figure out how to download/update and run in script
     * Likely route is to have a list of places to check, log and alert when an update is available and download/install updates where needed
-* Add logging - so that all issues are tracked in a log file

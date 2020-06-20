@@ -1,11 +1,23 @@
+function Get-TimeStamp {
+    
+    return "[{0:dd-MMM-yy} {0:HH:mm:ss}]" -f (Get-Date)
+    
+}
+
+function Write-Log {
+    param([string]$content)
+    Write-Host "$content"
+    Write-Output "$(Get-TimeStamp) $content" | Out-file log.txt -append
+}
+
 function Write-Header {
     param([string]$header)
-    Write-Host "############################################################`n"
-    Write-Host "$header"
+    Write-Log -content "############################################################`n"
+    Write-Log -content "$header"
 }
 
 function Write-Completed {
-    Write-Host "Completed"
+    Write-Log -content "Completed"
 }
 
 # Import config file for input variables for script
