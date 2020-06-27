@@ -98,7 +98,7 @@ To start a script, set the following:
 
 * Action: Start a program
 * Program\script: powershell
-* Add arguments (optional): -File [WindowsMaintenence Directory]\WindowsMaintenenceStep1.ps1
+* Add arguments (optional): ```-File [WindowsMaintenence Directory]\WindowsMaintenenceStep1.ps1```
 
 Go to the "Conditions" tab - this will set some additional conditions for the environment to check whether to run the task. For example, you can set it to not run if you're on battery power. You can leave the defaults, but I'd check the "Start the task only if the computer is idle for:" option and set if for an hour.
 

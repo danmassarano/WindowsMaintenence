@@ -26,7 +26,7 @@ $config = Get-Content -Raw -Path config.json | ConvertFrom-Json
 Write-Completed
 
 # Check if any disks need to be fixed
-if ($config.NeedsReboot == 1 -And $config.HasDiskErrors == 1)
+if ($config.NeedsReboot -eq 1 -And $config.HasDiskErrors -eq 1)
 {
     Write-Header -header "Fixing disc faults..."
 
@@ -47,7 +47,7 @@ if ($config.NeedsReboot == 1 -And $config.HasDiskErrors == 1)
 }
 
 # Only run if previous script has run
-elseif ($config.NeedsReboot == 1)
+elseif ($config.NeedsReboot -eq 1)
 {
     # DISM RestoreHealth
     Write-Header -header "Checking Windows image..."
@@ -62,9 +62,9 @@ elseif ($config.NeedsReboot == 1)
     # Windows Search purge and re-initialization
     Write-Header -header "Purging Windows Search..."
     net stop WSearch
-    Remove-Item /S /Q "C:\ProgramData\Microsoft\Search"
+    Remove-Item -Path "C:\ProgramData\Microsoft\Search" -Recurse
     Remove-Item -Path "HKCU:Software\Microsoft\Windows Search" -Recurse
-    Remove-ItemProperty -Path "HKLM:Software\Microsoft\Windows Search" -Name "SetupCompletedSuccessfully" -WhatIf
+    Remove-ItemProperty -Path "HKLM:Software\Microsoft\Windows Search" -Name "SetupCompletedSuccessfully"
     Write-Completed
 
     # Reset run status

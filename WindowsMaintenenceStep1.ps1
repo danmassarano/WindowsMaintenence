@@ -42,9 +42,11 @@ for ($i = 0; $i -lt $Drives.length; $i++)
     
     if($LASTEXITCODE -gt 1)
     {
-        Write-Log -content "Completed with errors"
+        $message = $Drives[$i] + "\ Completed with errors"
+        Write-Log -content $message
         $config | ForEach-Object {$_.HasDiskErrors=1}
-        $DisksWithErrors += $i
+        $DisksWithErrors += " "
+        $DisksWithErrors += $Drives[$i]
     }
     $config | ForEach-Object {$_.DisksWithErrors=$DisksWithErrors}
 }
