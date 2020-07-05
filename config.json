@@ -3,5 +3,8 @@
     "DataDrives":  "F: G: H: J:",
     "NeedsReboot":  0,
     "HasDiskErrors":  0,
-    "DisksWithErrors":  ""
+    "DisksWithErrors":  "",
+    "WeeksInterval" : 1,
+    "DaysOfWeek" : "Monday",
+    "TimeToTRun" : "3am"
 }
